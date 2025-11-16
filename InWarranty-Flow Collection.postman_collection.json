@@ -1,0 +1,856 @@
+{
+	"info": {
+		"_postman_id": "4b85b182-d340-4557-9cb1-89523957d394",
+		"name": "InWarranty-Flow Collection",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "14838319",
+		"_collection_link": "https://red-star-391604.postman.co/workspace/SDET-With-Jatin~d65235dd-ecac-4458-bc24-3edebc5fad15/collection/14838319-4b85b182-d340-4557-9cb1-89523957d394?action=share&source=collection_link&creator=14838319"
+	},
+	"item": [
+		{
+			"name": "loginFdAPIRequest",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"\r",
+							"var responsebody = pm.response.json()\r",
+							"pm.collectionVariables.set(\"fdtoken\",responsebody.data.token)\r",
+							"pm.test(\"verfiy thr status code is 200\",function(){\r",
+							"    pm.response.to.have.status(200)\r",
+							"\r",
+							"})\r",
+							"pm.test(\"verify time is less than 1000\",function(){\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(1000)\r",
+							"})\r",
+							"\r",
+							"pm.test(\"verify message is sucess\",function(){\r",
+							"    pm.expect(responsebody.message).to.be.equal(\"Success\")\r",
+							"\r",
+							"})\r",
+							"\r",
+							"pm.test(\"verify the toekn is not null\",function(){\r",
+							"    pm.expect(responsebody.data.token).to.be.not.null;\r",
+							"})\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "content",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"iamfd\",\r\n    \"password\": \"password\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{Base_URL}}/login",
+					"host": [
+						"{{Base_URL}}"
+					],
+					"path": [
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "UsernameApiRequest for fd",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"console.log(\"Positive test for user details\")\r",
+							"\r",
+							"const responseSchema = {\r",
+							"  \"type\": \"object\",\r",
+							"  \"properties\": {\r",
+							"    \"message\": {\r",
+							"      \"type\": \"string\",\r",
+							"      \"minLength\": 1\r",
+							"    },\r",
+							"    \"data\": {\r",
+							"      \"type\": \"object\",\r",
+							"      \"properties\": {\r",
+							"        \"id\": {\r",
+							"          \"type\": \"number\"\r",
+							"        },\r",
+							"        \"first_name\": {\r",
+							"          \"type\": \"string\",\r",
+							"          \"minLength\": 1\r",
+							"        },\r",
+							"        \"last_name\": {\r",
+							"          \"type\": \"string\",\r",
+							"          \"minLength\": 1\r",
+							"        },\r",
+							"        \"login_id\": {\r",
+							"          \"type\": \"string\",\r",
+							"          \"minLength\": 1\r",
+							"        },\r",
+							"        \"mobile_number\": {\r",
+							"          \"type\": \"string\",\r",
+							"          \"minLength\": 1\r",
+							"        },\r",
+							"        \"email_id\": {\r",
+							"          \"type\": \"string\",\r",
+							"          \"minLength\": 1\r",
+							"        },\r",
+							"        \"password\": {\r",
+							"          \"type\": \"string\",\r",
+							"          \"minLength\": 1\r",
+							"        },\r",
+							"        \"reset_password_date\": {\r",
+							"          \"type\": \"object\",\r",
+							"          \"properties\": {},\r",
+							"          \"required\": []\r",
+							"        },\r",
+							"        \"lock_status\": {\r",
+							"          \"type\": \"number\"\r",
+							"        },\r",
+							"        \"is_active\": {\r",
+							"          \"type\": \"number\"\r",
+							"        },\r",
+							"        \"mst_role_id\": {\r",
+							"          \"type\": \"number\"\r",
+							"        },\r",
+							"        \"mst_service_location_id\": {\r",
+							"          \"type\": \"number\"\r",
+							"        },\r",
+							"        \"created_at\": {\r",
+							"          \"type\": \"string\",\r",
+							"          \"minLength\": 1\r",
+							"        },\r",
+							"        \"modified_at\": {\r",
+							"          \"type\": \"string\",\r",
+							"          \"minLength\": 1\r",
+							"        },\r",
+							"        \"role_name\": {\r",
+							"          \"type\": \"string\",\r",
+							"          \"minLength\": 1\r",
+							"        },\r",
+							"        \"service_location\": {\r",
+							"          \"type\": \"string\",\r",
+							"          \"minLength\": 1\r",
+							"        }\r",
+							"      },\r",
+							"      \"required\": [\r",
+							"        \"id\",\r",
+							"        \"first_name\",\r",
+							"        \"last_name\",\r",
+							"        \"login_id\",\r",
+							"        \"mobile_number\",\r",
+							"        \"email_id\",\r",
+							"        \"password\",\r",
+							"        \"reset_password_date\",\r",
+							"        \"lock_status\",\r",
+							"        \"is_active\",\r",
+							"        \"mst_role_id\",\r",
+							"        \"mst_service_location_id\",\r",
+							"        \"created_at\",\r",
+							"        \"modified_at\",\r",
+							"        \"role_name\",\r",
+							"        \"service_location\"\r",
+							"      ]\r",
+							"    }\r",
+							"  },\r",
+							"  \"required\": [\r",
+							"    \"message\",\r",
+							"    \"data\"\r",
+							"  ]\r",
+							"}\r",
+							"\r",
+							"pm.test(\"Status code should be 200\",function(){\r",
+							"    pm.response.to.have.status(200)\r",
+							"})\r",
+							"\r",
+							"pm.test(\"respomse time should be less than 1000ms\",function(){\r",
+							"    pm.expect(pm.response.responseTime).to.below(1000)\r",
+							"})\r",
+							"pm.test(\"REesponse body contains message as success\",function(){\r",
+							"    pm.expect(pm.response.json().message).to.be.eql(\"Success\")\r",
+							"})\r",
+							"\r",
+							"//pm.test(\"schema validation\",function(){\r",
+							"    //pm.response.to.have.jsonSchema(responseSchema)\r",
+							"//})\r",
+							"\r",
+							"pm.test(\"verify user properties\",function(){\r",
+							"    pm.expect(pm.response.json().data).to.have.property(\"id\")\r",
+							"})\r",
+							"\r",
+							"//pm.test(\"Security test\",function(){\r",
+							"   // pm.expect(pm.response.json().data).to.not.have.property(\"password\")\r",
+							"//})"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"packages": {},
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"accept-encoding": true,
+					"accept": true,
+					"user-agent": true,
+					"host": true,
+					"connection": true
+				}
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{fdtoken}}"
+					}
+				],
+				"url": {
+					"raw": "{{Base_URL}}/userdetails",
+					"host": [
+						"{{Base_URL}}"
+					],
+					"path": [
+						"userdetails"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "countAPIRequest for fd",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"console.log(\"running count APi request\")\r",
+							"\r",
+							"var expected_keys =[\"pending_for_delivery\", \"created_today\", \"pending_fst_assignment\"]\r",
+							"const responseSchema = {\r",
+							"  \"type\": \"object\",\r",
+							"  \"properties\": {\r",
+							"    \"message\": {\r",
+							"      \"type\": \"string\"\r",
+							"    },\r",
+							"    \"data\": {\r",
+							"      \"type\": \"array\",\r",
+							"      \"items\": [\r",
+							"        {\r",
+							"          \"type\": \"object\",\r",
+							"          \"properties\": {\r",
+							"            \"label\": {\r",
+							"              \"type\": \"string\"\r",
+							"            },\r",
+							"            \"key\": {\r",
+							"              \"type\": \"string\"\r",
+							"            },\r",
+							"            \"count\": {\r",
+							"              \"type\": \"integer\"\r",
+							"            }\r",
+							"          },\r",
+							"          \"required\": [\r",
+							"            \"label\",\r",
+							"            \"key\",\r",
+							"            \"count\"\r",
+							"          ]\r",
+							"        },\r",
+							"        {\r",
+							"          \"type\": \"object\",\r",
+							"          \"properties\": {\r",
+							"            \"label\": {\r",
+							"              \"type\": \"string\"\r",
+							"            },\r",
+							"            \"key\": {\r",
+							"              \"type\": \"string\"\r",
+							"            },\r",
+							"            \"count\": {\r",
+							"              \"type\": \"integer\"\r",
+							"            }\r",
+							"          },\r",
+							"          \"required\": [\r",
+							"            \"label\",\r",
+							"            \"key\",\r",
+							"            \"count\"\r",
+							"          ]\r",
+							"        },\r",
+							"        {\r",
+							"          \"type\": \"object\",\r",
+							"          \"properties\": {\r",
+							"            \"label\": {\r",
+							"              \"type\": \"string\"\r",
+							"            },\r",
+							"            \"key\": {\r",
+							"              \"type\": \"string\"\r",
+							"            },\r",
+							"            \"count\": {\r",
+							"              \"type\": \"integer\"\r",
+							"            }\r",
+							"          },\r",
+							"          \"required\": [\r",
+							"            \"label\",\r",
+							"            \"key\",\r",
+							"            \"count\"\r",
+							"          ]\r",
+							"        }\r",
+							"      ]\r",
+							"    }\r",
+							"  },\r",
+							"  \"required\": [\r",
+							"    \"message\",\r",
+							"    \"data\"\r",
+							"  ]\r",
+							"}\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"verify response time\",function(){\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(1000)\r",
+							"})\r",
+							"\r",
+							"pm.test(\"verify message is sucess\",function(){\r",
+							"    pm.expect(pm.response.json().message).to.be.eql(\"Success\")\r",
+							"})\r",
+							"\r",
+							"pm.test(\"verify the schema\",function(){\r",
+							"    pm.response.to.have.jsonSchema(responseSchema)\r",
+							"})\r",
+							"\r",
+							"pm.test(\"verify the length of array is 3\",function(){\r",
+							"    pm.expect(pm.response.json().data).to.have.length(3)\r",
+							"})\r",
+							"\r",
+							"var expected_keys =[\"Pending for delivery\",\"Created today\",\"Pending for FST assignment\"]\r",
+							"\r",
+							"\r",
+							"\r",
+							"\r",
+							"pm.test(\"verify the keys are present\",function(){\r",
+							"let  actual_values = pm.response.json().data.map(function(item){\r",
+							"    return item.key})\r",
+							"    console.log(actual_values)\r",
+							"    pm.expect(actual_values).to.be.members(expected_keys)\r",
+							"})\r",
+							"\r",
+							"var data = pm.response.json().data\r",
+							"for (var index = 0; index < data.length; index++) {\r",
+							"\r",
+							"\r",
+							"pm.test(\"verify if count for json object is number\"+(data[index].label),function(){\r",
+							"    let count =pm.response.json().data[index].count\r",
+							"    pm.expect(typeof(count)).to.be.eql(\"number\")\r",
+							"})}\r",
+							"\r",
+							"var created_today = pm.response.json().data.find(item => item.key === \"created_today\").count;\r",
+							"pm.collectionVariables.set(\"created_today\", created_today);"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"user-agent": true,
+					"accept": true,
+					"accept-encoding": true,
+					"connection": true
+				}
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{fdtoken}}"
+					}
+				],
+				"url": {
+					"raw": "{{Base_URL}}/dashboard/count",
+					"host": [
+						"{{Base_URL}}"
+					],
+					"path": [
+						"dashboard",
+						"count"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "MasterApiRequest",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"console.log(\"running master api request\")\r",
+							"\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"})\r",
+							"\r",
+							"pm.test(\"Response time is less than 200ms\", function () {\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(1000)\r",
+							"})\r",
+							"\r",
+							"pm.test(\"Verify if the message is sucess\",function(){\r",
+							"    pm.expect(pm.response.json().message).to.eql(\"Success\")\r",
+							"})\r",
+							"\r",
+							"var expected_keys = [\"mst_oem\",\"mst_model\",\"mst_action_status\",\"mst_warrenty_status\",\r",
+							"    \"mst_platform\", \"mst_product\", \"mst_role\", \"mst_service_location\", \"mst_problem\", \"map_fst_pincode\"]\r",
+							"expected_keys.forEach(function(i){\r",
+							"    pm.test(\"verify the keys\"+i+\" are present\",function(){\r",
+							"        pm.expect(pm.response.json().data).to.have.property(i)\r",
+							"    })\r",
+							"})\r",
+							"\r",
+							"expected_keys.forEach(function(i){\r",
+							"    pm.test(\"verify the keys\"+i+\" is  not null \",function(){\r",
+							"        pm.expect(Array.isArray(pm.response.json().data[i])).to.be.true\r",
+							"        pm.expect(pm.response.json().data[i].length).to.be.greaterThan(0)\r",
+							"    })\r",
+							"})\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"accept-encoding": true,
+					"connection": true,
+					"accept": true,
+					"user-agent": true,
+					"host": true,
+					"content-length": true
+				}
+			},
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{fdtoken}}"
+					}
+				],
+				"url": {
+					"raw": "{{Base_URL}}/master",
+					"host": [
+						"{{Base_URL}}"
+					],
+					"path": [
+						"master"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "CreateJobAPiRequest",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"console.log(\"Testing Create Job API Response\")\r",
+							"var jobid =pm.response.json()\r",
+							"var expected_keys = [\"id\", \"mst_service_location_id\", \"mst_platform_id\", \"mst_warrenty_status_id\", \"mst_oem_id\", \"tr_customer_id\", \"tr_customer_product_id\", \"job_number\"]\r",
+							"\r",
+							"pm.collectionVariables.set(\"jobid\",jobid.data.id)\r",
+							"pm.collectionVariables.set(\"jobnumber\",jobid.data.job_number)\r",
+							"\r",
+							"\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"})\r",
+							"\r",
+							"pm.test(\"Verify response time\",function(){\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(2000);\r",
+							"})\r",
+							"\r",
+							"pm.test(\"verify job is created successfully\",function(){\r",
+							"    pm.expect(pm.response.json().message).to.eql(\"Job created successfully. \")\r",
+							"})\r",
+							"\r",
+							"expected_keys.forEach(function(index){\r",
+							"    pm.test(\"verify id \" + index + \" is present\", function () {\r",
+							"        pm.expect(pm.response.json().data).to.have.property(index) \r",
+							"\r",
+							"})})\r",
+							"\r",
+							"pm.test(\"verfiy the job starts with job_\",function(){\r",
+							"    pm.expect(pm.response.json().data.job_number).to.match(/^JOB_/)  \r",
+							"    pm.expect(pm.response.json().data.job_number.startsWith(\"JOB_\")).to.be.true//starts with JOB_\r",
+							"})"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var random =Math.random();\r",
+							"var Imeinumber = Math.floor(random*1000000000000+10000000000000)\r",
+							"pm.collectionVariables.set(\"imeinumber\",Imeinumber)"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {}
+			},
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{fdtoken}}"
+					},
+					{
+						"key": "",
+						"value": "",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"mst_service_location_id\": 0,\r\n    \"mst_platform_id\": 2,\r\n    \"mst_warrenty_status_id\": 1,\r\n    \"mst_oem_id\": 1,\r\n    \"customer\": {\r\n        \"first_name\": \"{{$randomFirstName}}\",\r\n        \"last_name\": \"{{$randomLastName}}\",\r\n        \"mobile_number\": \"{{$randomPhoneNumber}}\",\r\n        \"mobile_number_alt\": \"\",\r\n        \"email_id\": \"{{$randomEmail}}\",\r\n        \"email_id_alt\": \"\"\r\n    },\r\n    \"customer_address\": {\r\n        \"flat_number\": \"11\",\r\n        \"apartment_name\": \"renoswet\",\r\n        \"street_name\": \"pune\",\r\n        \"landmark\": \"banee\",\r\n        \"area\": \"pune\",\r\n        \"pincode\": \"560035\",\r\n        \"country\": \"India\",\r\n        \"state\": \"Assam\"\r\n    },\r\n    \"customer_product\": {\r\n        \"dop\": \"2025-10-19T23:00:00.000Z\",\r\n        \"serial_number\": \"{{imeinumber}}\",\r\n        \"imei1\": \"{{imeinumber}}\",\r\n        \"imei2\": \"{{imeinumber}}\",\r\n        \"popurl\": \"2025-10-19T23:00:00.000Z\",\r\n        \"product_id\": 1,\r\n        \"mst_model_id\": 1\r\n    },\r\n    \"problems\": [\r\n        {\r\n            \"id\": 1,\r\n            \"remark\": \"run no\"\r\n        }\r\n    ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{Base_URL}}/job/create",
+					"host": [
+						"{{Base_URL}}"
+					],
+					"path": [
+						"job",
+						"create"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "CountAPiRequest for fd",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{fdtoken}}"
+					}
+				],
+				"url": {
+					"raw": "{{Base_URL}}/dashboard/count",
+					"host": [
+						"{{Base_URL}}"
+					],
+					"path": [
+						"dashboard",
+						"count"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DetailsApiRequest",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"console.log(\"running the details APi request\")\r",
+							"ResponseBody = pm.response.json()\r",
+							"\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200)\r",
+							"})\r",
+							"\r",
+							"pm.test(\"verify the time is below 200\",function(){\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(1000)\r",
+							"})\r",
+							"\r",
+							"pm.test(\"verify if the json object has required fields\",function(){\r",
+							"    ResponseBody.data.forEach(function(item){\r",
+							"        pm.expect(item).to.have.property('id')\r",
+							"        pm.expect(item).to.have.property('job_number')\r",
+							"    })\r",
+							"})"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json, text/plain, */*"
+					},
+					{
+						"key": "Accept-Language",
+						"value": "en-GB,en;q=0.9,en-US;q=0.8"
+					},
+					{
+						"key": "Authorization",
+						"value": "{{fdtoken}}"
+					},
+					{
+						"key": "Connection",
+						"value": "keep-alive"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Origin",
+						"value": "http://phoenix.techwithjatin.com"
+					},
+					{
+						"key": "Referer",
+						"value": "http://phoenix.techwithjatin.com/"
+					},
+					{
+						"key": "User-Agent",
+						"value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36 Edg/141.0.0.0"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"details_key\":\"created_today\"}"
+				},
+				"url": {
+					"raw": "{{Base_URL}}/dashboard/details",
+					"host": [
+						"{{Base_URL}}"
+					],
+					"path": [
+						"dashboard",
+						"details"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "SearchJobAPIRequest",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json, text/plain, */*"
+					},
+					{
+						"key": "Accept-Language",
+						"value": "en-GB,en;q=0.9,en-US;q=0.8"
+					},
+					{
+						"key": "Authorization",
+						"value": "{{fdtoken}}"
+					},
+					{
+						"key": "Connection",
+						"value": "keep-alive"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Origin",
+						"value": "http://phoenix.techwithjatin.com"
+					},
+					{
+						"key": "Referer",
+						"value": "http://phoenix.techwithjatin.com/"
+					},
+					{
+						"key": "User-Agent",
+						"value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36 Edg/141.0.0.0"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"searchText\":\"{{jobnumber}}\"}"
+				},
+				"url": {
+					"raw": "{{Base_URL}}/job/search",
+					"host": [
+						"{{Base_URL}}"
+					],
+					"path": [
+						"job",
+						"search"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "JobDetailsAPIRequest",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"verify details is an array\",function(){\r",
+							"    pm.expect(pm.response.json().data.details).to.be.an('array')\r",
+							"    pm.expect(pm.response.json().data.details.length).to.be.greaterThan(0)\r",
+							"})\r",
+							"\r",
+							"pm.response.json().data.details.forEach(function(index){\r",
+							"    pm.test(\"verify details id is a number\", function () {\r",
+							"        pm.expect(index).to.have.property(\"id\")\r",
+							"})\r",
+							"})"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json, text/plain, */*"
+					},
+					{
+						"key": "Accept-Language",
+						"value": "en-GB,en;q=0.9,en-US;q=0.8"
+					},
+					{
+						"key": "Authorization",
+						"value": "{{fdtoken}}"
+					},
+					{
+						"key": "Connection",
+						"value": "keep-alive"
+					},
+					{
+						"key": "Content-Length",
+						"value": "0"
+					},
+					{
+						"key": "Content-Type",
+						"value": "text/plain"
+					},
+					{
+						"key": "Origin",
+						"value": "http://phoenix.techwithjatin.com"
+					},
+					{
+						"key": "Referer",
+						"value": "http://phoenix.techwithjatin.com/"
+					},
+					{
+						"key": "User-Agent",
+						"value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36 Edg/141.0.0.0"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{Base_URL}}/job/details/{{jobnumber}}",
+					"host": [
+						"{{Base_URL}}"
+					],
+					"path": [
+						"job",
+						"details",
+						"{{jobnumber}}"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"variable": [
+		{
+			"key": "fdtoken",
+			"value": ""
+		},
+		{
+			"key": "imeinumber",
+			"value": ""
+		},
+		{
+			"key": "jobid",
+			"value": ""
+		},
+		{
+			"key": "jobnumber",
+			"value": ""
+		},
+		{
+			"key": "created_today",
+			"value": ""
+		}
+	]
+}
