@@ -28,7 +28,7 @@ jobs:
              npm install -g newman 
              npm install -g newman-reporter-htmlextra
 
-      - name: Run the collection using newman
+      - name: Run the collection usingnewman
         run: |
              newman run 'InWarranty-Flow Collection.postman_collection.json' \
              -e QA.postman_environment.json \
